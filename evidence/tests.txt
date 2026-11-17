@@ -1,0 +1,17 @@
+test_issuer_strictly_increasing_under_threads (tests.test_fencing.FencingTests.test_issuer_strictly_increasing_under_threads) ... ok
+test_older_then_newer_both_accepted_in_order (tests.test_fencing.FencingTests.test_older_then_newer_both_accepted_in_order) ... ok
+test_same_token_retry_accepted (tests.test_fencing.FencingTests.test_same_token_retry_accepted) ... ok
+test_stale_worker_rejected_after_newer_token (tests.test_fencing.FencingTests.test_stale_worker_rejected_after_newer_token) ... ok
+test_tokens_tracked_per_order (tests.test_fencing.FencingTests.test_tokens_tracked_per_order) ... ok
+test_delivery_2_1_2 (tests.test_ordering.OrderingTests.test_delivery_2_1_2) ... ok
+test_duplicate_of_applied_version_ignored (tests.test_ordering.OrderingTests.test_duplicate_of_applied_version_ignored) ... ok
+test_duplicate_of_pending_version_ignored (tests.test_ordering.OrderingTests.test_duplicate_of_pending_version_ignored) ... ok
+test_gap_after_partial_progress (tests.test_ordering.OrderingTests.test_gap_after_partial_progress) ... ok
+test_gap_filled_applies_in_order (tests.test_ordering.OrderingTests.test_gap_filled_applies_in_order) ... ok
+test_multiple_orders_independent (tests.test_ordering.OrderingTests.test_multiple_orders_independent) ... ok
+test_only_later_version_does_not_jump_ahead (tests.test_ordering.OrderingTests.test_only_later_version_does_not_jump_ahead) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.002s
+
+OK

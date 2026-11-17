@@ -1,0 +1,16 @@
+======================================================================
+STALE WORKER TEST: two workers, increasing fencing tokens
+======================================================================
+
+worker-A acquires lock, fencing token = 1
+worker-A then stalls (e.g. long GC pause) and its lock lease expires...
+
+worker-B acquires lock, fencing token = 2
+>> worker-B updates order-1 (newer token)
+[order-1] worker-B token=2 status=shipped: ACCEPTED
+
+worker-A wakes up, still believes it holds the lock
+>> worker-A updates order-1 (older token)
+[order-1] worker-A token=1 status=cancelled: REJECTED (stale token; store has seen token 2)
+
+FINAL STATE: order-1 status=shipped highest_token=2 last_writer=worker-B

@@ -1,0 +1,39 @@
+======================================================================
+SCENARIO 1: delivery order  version 2 -> version 1 -> version 2 again
+======================================================================
+
+>> received order_id=order-1 version=2 status=shipped
+[order-1] v2 (shipped): BUFFERED, waiting for v1
+[order-1] MISSING version(s) [1]; pending [2]
+    STATE: version=0 status=None pending=[2] missing=[1] applied_order=[]
+
+>> received order_id=order-1 version=1 status=paid
+[order-1] v1 (paid): APPLIED -> order now v1/paid
+[order-1] v2 (shipped): APPLIED (from buffer) -> order now v2/shipped
+    STATE: version=2 status=shipped pending=[] missing=[] applied_order=[1, 2]
+
+>> received order_id=order-1 version=2 status=shipped
+[order-1] v2 (shipped): IGNORED duplicate (already applied; current v2)
+    STATE: version=2 status=shipped pending=[] missing=[] applied_order=[1, 2]
+
+======================================================================
+SCENARIO 2: missing event - only version 3 arrives (v1, v2 missing)
+======================================================================
+
+>> received order_id=order-2 version=3 status=delivered
+[order-2] v3 (delivered): BUFFERED, waiting for v1
+[order-2] MISSING version(s) [1, 2]; pending [3]
+    STATE: version=0 status=None pending=[3] missing=[1, 2] applied_order=[]
+
+    Order did NOT jump ahead: status is still None, v3 is held as pending.
+
+-- later, the missing events arrive (v1 then v2) --
+
+>> received order_id=order-2 version=1 status=paid
+[order-2] v1 (paid): APPLIED -> order now v1/paid
+    STATE: version=1 status=paid pending=[3] missing=[2] applied_order=[1]
+
+>> received order_id=order-2 version=2 status=shipped
+[order-2] v2 (shipped): APPLIED -> order now v2/shipped
+[order-2] v3 (delivered): APPLIED (from buffer) -> order now v3/delivered
+    STATE: version=3 status=delivered pending=[] missing=[] applied_order=[1, 2, 3]
