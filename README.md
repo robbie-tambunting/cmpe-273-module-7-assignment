@@ -129,7 +129,23 @@ Full log: [evidence/tests.txt](evidence/tests.txt).
 
 ## Screenshots
 
-<!-- Screenshots are added in the final evidence phase. -->
+### Event ordering, duplicate handling, and missing event (`python3 demo_ordering.py`)
+
+Scenario 1 shows v2 buffered, v1 applied followed by v2 from the buffer, and the repeated v2 ignored as a duplicate. Scenario 2 shows only v3 arriving: it stays pending with `[1, 2]` missing and the status does not jump ahead, then everything applies in order once v1 and v2 arrive.
+
+![Ordering demo: 2 → 1 → 2, duplicate ignored, and the missing-event case](evidence/screenshots/01-ordering-and-missing-event.png)
+
+### Stale worker rejection (`python3 demo_fencing.py`)
+
+Worker B's token 2 update is accepted; worker A's later write with token 1 is rejected, and the final state comes from worker B.
+
+![Fencing demo: token 2 accepted, stale token 1 rejected](evidence/screenshots/02-stale-worker-rejected.png)
+
+### Tests (`python3 -m unittest discover -s tests -t . -v`)
+
+All 12 tests pass.
+
+![Test run: 12 tests, OK](evidence/screenshots/03-tests-passing.png)
 
 ## Reflection
 
