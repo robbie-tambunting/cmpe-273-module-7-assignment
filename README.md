@@ -149,3 +149,6 @@ All 12 tests pass.
 
 ## Reflection
 
+**Why are timestamps alone not enough to guarantee correct event ordering in a distributed system?**
+
+Timestamps are unreliable when clocks on different services are not the same.  If service A's clock is 2 seconds ahead of Service B's, an update A sends can be stamped later than an update B sends afterwards. Sorting by timestamp would put them in the wrong order. Network delays and retries can also cause events to arrive in a different order than when they were sent. With the fencing token and order-version approach, ordering doesn't have to depend on a wall clock.
